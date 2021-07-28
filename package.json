@@ -2,7 +2,9 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/vancomm/backend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/vancomm/backend-project-lvl2/actions)",
-  "bin": "bin/gendiff.js",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +23,8 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4"
   },
-  "type" : "module"
+  "type": "module",
+  "dependencies": {
+    "commander": "^8.1.0"
+  }
 }
