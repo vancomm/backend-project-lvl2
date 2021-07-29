@@ -10,15 +10,12 @@ const diffJSON = (data1, data2) => {
   const result = [];
   Object.entries(data1).forEach(([key, value]) => {
     if (containsKey(data2, key)) {
-      if (value === data2[key]) {
-        result.push(`    ${key}: ${value}`);
-      } else {
+      if (value === data2[key]) result.push(`    ${key}: ${value}`);
+      else {
         result.push(`  - ${key}: ${value}`);
         result.push(`  + ${key}: ${data2[key]}`);
       }
-    } else {
-      result.push(`  - ${key}: ${value}`);
-    }
+    } else result.push(`  - ${key}: ${value}`);
   });
   Object.entries(data2).forEach(([key, value]) => {
     if (!containsKey(data1, key)) {
