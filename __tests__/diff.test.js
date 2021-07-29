@@ -13,6 +13,6 @@ const filename1 = getFixturePath('file1.json');
 const filename2 = getFixturePath('file2.json');
 const output = readFileSync(getFixturePath('output.txt'), 'utf-8');
 
-test('diff', () => {
+test('diff with flat json', () => {
   expect(diff(filename1, filename2)).toEqual(output);
 });
