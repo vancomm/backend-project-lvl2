@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Coverage
+name: Lint, Test, Coverage
 
 # Controls when the workflow will run
 on:
@@ -30,7 +30,7 @@ jobs:
         run: make install
 
       # Runs a set of commands using the runners shell
-      - name: Lint
+      - name: Run linter
         run: make lint
 
   test:
@@ -50,12 +50,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Install
         run: make install
+
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: make coverage
+          coverageCommand: make test-coverage
           debug: true

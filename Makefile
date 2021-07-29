@@ -7,11 +7,11 @@ run:
 test:
 	npm test
 
-coverage:
-	npm test	
+test-coverage:
+	npm test -- --coverage --coverageProvider=v8	
 
 test-watch:
-	npm run test-watch
+	npx jest --watch
 
 publish:
 	npm publish --dry-run
