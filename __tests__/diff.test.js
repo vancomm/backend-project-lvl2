@@ -1,6 +1,6 @@
 /* eslint-disable jest/no-commented-out-tests */
 import { readFileSync } from 'fs';
-import diff, { normalizePath, containsKey } from '../index.js';
+import diff, { normalizePath, containsKey } from '../src/diff.js';
 
 const filename1 = './__tests__/file1.json';
 const filename2 = '__tests__/file2.json';
