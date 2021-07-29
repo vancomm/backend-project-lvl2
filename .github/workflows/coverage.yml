@@ -49,6 +49,7 @@ jobs:
     name: coverage
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Install
         run: make install
       - name: Test & publish code coverage
