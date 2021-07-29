@@ -7,6 +7,9 @@ run:
 test:
 	npm test
 
+coverage:
+	npm test	
+
 test-watch:
 	npm run test-watch
 
