@@ -28,6 +28,7 @@
   },
   "type": "module",
   "dependencies": {
-    "commander": "^8.1.0"
+    "commander": "^8.1.0",
+    "lodash": "^4.17.21"
   }
 }
