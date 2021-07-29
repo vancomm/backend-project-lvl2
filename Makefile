@@ -7,6 +7,9 @@ run:
 test:
 	npm test
 
+test-watch:
+	npm run test-watch
+
 publish:
 	npm publish --dry-run
 

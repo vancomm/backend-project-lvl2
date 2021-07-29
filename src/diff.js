@@ -8,7 +8,6 @@ const containsKey = (obj, key) => obj[key] ?? false;
 
 const diffJSON = (data1, data2) => {
   const result = [];
-
   Object.entries(data1).forEach(([key, value]) => {
     if (containsKey(data2, key)) {
       if (value === data2[key]) {
@@ -21,13 +20,11 @@ const diffJSON = (data1, data2) => {
       result.push(`  - ${key}: ${value}`);
     }
   });
-
   Object.entries(data2).forEach(([key, value]) => {
     if (!containsKey(data1, key)) {
       result.push(`  + ${key}: ${value}`);
     }
   });
-
   result.sort((a, b) => {
     const sign1 = a.slice(0, 4).trim();
     const value1 = a.slice(4).split(':')[0];
@@ -35,7 +32,6 @@ const diffJSON = (data1, data2) => {
     if (value1 === value2) return sign1 === '+' ? 1 : -1;
     return value1 > value2 ? 1 : -1;
   });
-
   return ['{', ...result, '}'].join('\n');
 };
 
