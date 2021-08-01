@@ -8,4 +8,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/42c3dcb4f0c33669944d/test_coverage)](https://codeclimate.com/github/vancomm/backend-project-lvl2/test_coverage)
 
 Demo:
+
 https://asciinema.org/a/VMbV59D5GasAhgjUfBd7qAncW
+
+https://asciinema.org/a/F9F7aSsx89ng6rWetXz8RhGhx
