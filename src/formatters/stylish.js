@@ -36,8 +36,7 @@ const getStatus = (value) => {
   if (hasOld && !hasNew) return 0;
   if (hasOld && hasNew) {
     const { oldValue, newValue } = value;
-    if (oldValue === newValue) return 2;
-    return 1;
+    return (oldValue === newValue) ? 2 : 1;
   }
   if (!hasOld && hasNew) return 3;
   return -1;
