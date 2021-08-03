@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getStatus, memberSorter } from '../utilities.js';
+import { getStatus } from '../utilities.js';
 
 const normalizeValue = (value) => {
   if (typeof value === 'undefined') return '';
@@ -27,7 +27,6 @@ const buildLine = (path, value, status) => {
 const iter = (path, data) => {
   const result = [];
   const members = _.orderBy(_.entries(data), (a) => a[0]);
-  members.sort(memberSorter);
   members.forEach(([key, value]) => {
     const status = getStatus(value);
     const newPath = _.clone(path);
