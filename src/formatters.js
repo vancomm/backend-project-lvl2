@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { containsKey } from './utilities.js';
 
+const debug = (data) => JSON.stringify(data, null, '  ').replace(/"/g, '');
+
 /**
  * Returns info on what versions value has.
  *
@@ -12,7 +14,7 @@ import { containsKey } from './utilities.js';
  *
  * @param {object} value Value to get versions of.
  * @return {number} Info on versions of the value.
-*/
+ */
 const getVersion = (value) => {
   const hasOld = containsKey(value, 'oldValue');
   const hasNew = containsKey(value, 'newValue');
@@ -23,13 +25,12 @@ const getVersion = (value) => {
   return -1;
 };
 
-const debug = (data) => JSON.stringify(data, null, '  ').replace(/"/g, '');
+const pref = (level, sign = '', spaces = 4) => (sign === ''
+  ? ' '.repeat(spaces * level)
+  : ' '.repeat(spaces * (level - 1)).concat(`  ${sign} `)
+);
 
 const stylish = (data) => {
-  const pref = (level, sign = '', spaces = 4) => (sign === ''
-    ? ' '.repeat(spaces * level)
-    : ' '.repeat(spaces * (level - 1)).concat(`  ${sign} `)
-  );
   const addData = (key, value, res, level, sign, recursiveCall) => {
     if (_.isObject(value)) { //                           version is an object
       res.push(`${pref(level, sign)}${key}: {`);
@@ -40,20 +41,16 @@ const stylish = (data) => {
     }
   };
   const addDataWithVersions = (key, value, res, level, recursiveCall, version) => {
-    if (version === 1) { //                           member has two versions
-      const { oldValue, newValue } = value;
-      if (oldValue === newValue) { //                     two versions are the same
-        addData(key, oldValue, res, level, '', recursiveCall);
-      } else { //                                         two versions are different
+    const { oldValue, newValue } = value;
+    if (version === 1 && oldValue === newValue) { //            member has two identical versions
+      addData(key, oldValue, res, level, '', recursiveCall);
+    } else {
+      if (version === 0 || version === 1) { //                  member has an old version
         addData(key, oldValue, res, level, '-', recursiveCall);
+      }
+      if (version === 2 || version === 1) { //                  member has a new version
         addData(key, newValue, res, level, '+', recursiveCall);
       }
-    } else if (version === 0) { //                    member only has an old version
-      const { oldValue } = value;
-      addData(key, oldValue, res, level, '-', recursiveCall);
-    } else if (version === 2) { //                    member only has a new version
-      const { newValue } = value;
-      addData(key, newValue, res, level, '+', recursiveCall);
     }
   };
   const iter = (object, res, level) => {
