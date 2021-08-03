@@ -23,23 +23,30 @@ const yaml2 = getFixturePath('nested2.yaml');
 
 let nestedOutput;
 
+let plainOutput;
+
 const style = 'stylish';
 
 beforeAll(() => {
   flatOutput = readFileSync(getFixturePath('flatoutput.txt'), 'utf-8');
   nestedOutput = readFileSync(getFixturePath('nestedoutput.txt'), 'utf-8');
+  plainOutput = readFileSync(getFixturePath('plainoutput.txt'), 'utf-8');
 });
 
 test('diff with flat json', () => {
-  console.log(diff(flatjson1, flatjson2, style));
+  // console.log(diff(flatjson1, flatjson2, style));
   expect(diff(flatjson1, flatjson2, style)).toEqual(flatOutput);
 });
 
 test('diff with nested json', () => {
-  console.log(diff(json1, json2, style));
+  // console.log(diff(json1, json2, style));
   expect(diff(json1, json2, style)).toEqual(nestedOutput);
 });
 
 test('diff with nested yaml', () => {
   expect(diff(yaml1, yaml2, style)).toEqual(nestedOutput);
 });
+
+// test('diff with plain output', () => {
+//   expect(diff(yaml1, yaml2, 'plain')).toEqual(plainOutput);
+// });
