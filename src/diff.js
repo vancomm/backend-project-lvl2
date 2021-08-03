@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 import buildResult from './buildResult.js';
 import { fromJSON, fromYAML } from './parsers.js';
-import { debug, stylish } from './formatters.js';
+import getFormatter from './formatters/index.js';
 
 const normalizePath = (file) => path.resolve(process.cwd(), file);
 
@@ -14,12 +14,6 @@ const getParser = (ext) => {
     return fromYAML;
   }
   return fromJSON;
-};
-
-const getFormatter = (option) => {
-  if (option === 'debug') return debug;
-  if (option === 'stylish') return stylish;
-  return debug;
 };
 
 const diff = (filename1, filename2, formatterOption = 'stylish') => {
