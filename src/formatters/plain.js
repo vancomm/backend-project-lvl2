@@ -25,18 +25,17 @@ const buildLine = (path, value, status) => {
 };
 
 const iter = (path, data) => {
-  const result = [];
   const members = _.orderBy(_.entries(data), (a) => a[0]);
-  members.forEach(([key, value]) => {
+  const result = members.reduce((acc, [key, value]) => {
     const status = getStatus(value);
-    const newPath = _.clone(path);
-    newPath.push(key);
+    const newPath = [...path, key];
     if (status !== -1 && status !== 2) {
-      result.push(buildLine(newPath, value, status));
+      acc.push(buildLine(newPath, value, status));
     } else if (status === -1) {
-      result.push(iter(newPath, value));
+      acc.push(iter(newPath, value));
     }
-  });
+    return acc;
+  }, []);
   return result.flat();
 };
 
