@@ -9,6 +9,4 @@
 
 Demo:
 
-https://asciinema.org/a/VMbV59D5GasAhgjUfBd7qAncW
-
-https://asciinema.org/a/F9F7aSsx89ng6rWetXz8RhGhx
+https://asciinema.org/a/3rj6vTsZrEHvl9lDlr7hj6sZc
