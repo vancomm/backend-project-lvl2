@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getStatus, memberSorter } from '../utilities.js';
+import { getStatus } from '../utilities.js';
 
 const pref = (level, sign = '', spaces = 4) => (sign === ''
   ? ' '.repeat(spaces * level)
@@ -30,8 +30,7 @@ const addDataWithVersions = (key, value, res, level, recursiveCall, status) => {
 };
 
 const iter = (object, res, level) => {
-  const members = _.entries(object);
-  members.sort(memberSorter);
+  const members = _.orderBy(_.entries(object), (a) => a[0]);
   members.forEach(([key, value]) => {
     const status = getStatus(value);
     if (status === -1) { //                          member doesn't have versions

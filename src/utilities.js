@@ -27,10 +27,7 @@ const getStatus = (value) => {
   return -1;
 };
 
-const memberSorter = (a, b) => (a[0] > b[0] ? 1 : -1);
-
 export {
   containsKey,
   getStatus,
-  memberSorter,
 };

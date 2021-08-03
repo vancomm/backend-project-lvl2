@@ -26,7 +26,7 @@ const buildLine = (path, value, status) => {
 
 const iter = (path, data) => {
   const result = [];
-  const members = _.entries(data);
+  const members = _.orderBy(_.entries(data), (a) => a[0]);
   members.sort(memberSorter);
   members.forEach(([key, value]) => {
     const status = getStatus(value);
