@@ -23,7 +23,7 @@ const yaml2 = getFixturePath('nested2.yaml');
 
 let nestedOutput;
 
-const style = 'test';
+const style = 'stylish';
 
 beforeAll(() => {
   flatOutput = readFileSync(getFixturePath('flatoutput.txt'), 'utf-8');

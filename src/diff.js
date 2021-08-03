@@ -18,32 +18,35 @@ const getParser = (ext) => {
 const containsKey = (obj, key) => (Object.prototype.hasOwnProperty.call(obj, key) && typeof obj[key] !== 'undefined');
 
 const buildResult = (data1, data2) => {
-  const makeNode = (oldValue, newValue = undefined) => ({ oldValue, newValue });
+  const makeNode = (oldValue, newValue) => ({ oldValue, newValue });
 
-  const iter1 = (subj, ref, res) => {
-    const members = _.entries(subj);
+  const iter1 = (object, source, res) => {
+    const members = _.entries(object);
     members.forEach(([key, value]) => {
-      if (containsKey(ref, key)) {
-        if (_.isObject(value)) {
+      if (containsKey(source, key)) { //              there is a new version of member
+        if (_.isObject(value) && _.isObject(source[key])) {
+          //                                              member is an object in both versions
           res[key] = {};
-          iter1(value, ref[key], res[key]);
-        } else {
-          res[key] = makeNode(value, ref[key]);
+          iter1(value, source[key], res[key]);
+        } else { //                                       member is plain data
+          res[key] = makeNode(value, source[key]);
         }
-      } else {
+      } else { //                                     there is no new version of member
         res[key] = makeNode(value);
       }
     });
   };
 
-  const iter2 = (subj, ref, res) => {
-    const members = _.entries(subj);
+  const iter2 = (source, object, res) => {
+    const members = _.entries(source);
     members.forEach(([key, value]) => {
-      if (containsKey(ref, key)) {
-        if (_.isObject(value)) {
-          iter2(value, ref[key], res[key]);
+      if (containsKey(object, key)) { //              there is an old version of member
+        if (_.isObject(value)) { //                       new version is an object
+          iter2(value, object[key], res[key]);
+        } else { //                                       new version is not an object
+          res[key].newValue = value;
         }
-      } else {
+      } else { //                                     there is no old version of member
         res[key] = makeNode(undefined, value);
       }
     });
@@ -58,9 +61,7 @@ const buildResult = (data1, data2) => {
 const getFormatter = (option) => {
   const debug = (data) => JSON.stringify(data, null, '  ').replace(/"/g, '');
 
-  const stylish = debug;
-
-  const test = (data) => {
+  const stylish = (data) => {
     const pref = (level, sign = '', spaces = 4) => (sign === ''
       ? ' '.repeat(spaces * level)
       : ' '.repeat(spaces * (level - 1)).concat(`  ${sign} `)
@@ -141,8 +142,6 @@ const getFormatter = (option) => {
   if (option === 'debug') return debug;
 
   if (option === 'stylish') return stylish;
-
-  if (option === 'test') return test;
 
   return debug;
 };
