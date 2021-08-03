@@ -8,8 +8,8 @@ export default () => {
     .description('Compares two configuration files and shows a difference. ')
     .version('0.0.1')
     .option('-f, --format <type>', 'output format', 'stylish')
-    .action((filename1, filename2, option) => {
-      console.log(diff(filename1, filename2, option));
+    .action((filename1, filename2, options) => {
+      console.log(diff(filename1, filename2, options.format));
     });
   program.parse();
 };
