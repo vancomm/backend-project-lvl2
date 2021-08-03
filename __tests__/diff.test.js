@@ -47,6 +47,7 @@ test('diff with nested yaml', () => {
   expect(diff(yaml1, yaml2, style)).toEqual(nestedOutput);
 });
 
-// test('diff with plain output', () => {
-//   expect(diff(yaml1, yaml2, 'plain')).toEqual(plainOutput);
-// });
+test('diff with plain output', () => {
+  console.log(diff(json1, json2, 'plain'));
+  expect(diff(json1, json2, 'plain')).toEqual(plainOutput);
+});

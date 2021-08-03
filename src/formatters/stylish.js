@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { containsKey } from '../utilities.js';
+import { getStatus, memberSorter } from '../utilities.js';
 
 const pref = (level, sign = '', spaces = 4) => (sign === ''
   ? ' '.repeat(spaces * level)
@@ -14,32 +14,6 @@ const addData = (key, value, res, level, sign, recursiveCall) => {
   } else { //                                           version is plain data
     res.push(`${pref(level, sign)}${key}: ${value}`);
   }
-};
-
-/**
- * Returns status of value's versions.
- *
- *  Statuses:
- *  -1: no versions,
- *  0:  only old      (deleted),
- *  1:  old and new   (updated),
- *  2:  same versions (unchanged),
- *  3:  only new      (added).
- *
- * @param {object} value Value to get status of.
- * @return {number} Status of the value.
- */
-const getStatus = (value) => {
-  const hasOld = containsKey(value, 'oldValue');
-  const hasNew = containsKey(value, 'newValue');
-
-  if (hasOld && !hasNew) return 0;
-  if (hasOld && hasNew) {
-    const { oldValue, newValue } = value;
-    return (oldValue === newValue) ? 2 : 1;
-  }
-  if (!hasOld && hasNew) return 3;
-  return -1;
 };
 
 const addDataWithVersions = (key, value, res, level, recursiveCall, status) => {
@@ -57,7 +31,7 @@ const addDataWithVersions = (key, value, res, level, recursiveCall, status) => {
 
 const iter = (object, res, level) => {
   const members = _.entries(object);
-  members.sort((a, b) => (a[0] > b[0] ? 1 : -1));
+  members.sort(memberSorter);
   members.forEach(([key, value]) => {
     const status = getStatus(value);
     if (status === -1) { //                          member doesn't have versions
