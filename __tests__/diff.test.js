@@ -51,3 +51,8 @@ test('diff with plain output', () => {
   console.log(diff(json1, json2, 'plain'));
   expect(diff(json1, json2, 'plain')).toEqual(plainOutput);
 });
+
+// test('diff with json output', () => {
+//   console.log(diff(json1, json2, 'json'));
+//   expect(diff(json1, json2, 'json')).toEqual(plainOutput);
+// });
