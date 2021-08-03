@@ -28,12 +28,12 @@ const plainOutput = readFileSync(getFixturePath('plainoutput.txt'), 'utf-8');
 const style = 'stylish';
 
 test('diff with flat json', () => {
-  // console.log(diff(flatjson1, flatjson2, style));
+  console.log(diff(flatjson1, flatjson2, style));
   expect(diff(flatjson1, flatjson2, style)).toEqual(flatOutput);
 });
 
 test('diff with nested json', () => {
-  // console.log(diff(json1, json2, style));
+  console.log(diff(json1, json2, style));
   expect(diff(json1, json2, style)).toEqual(nestedOutput);
 });
 
@@ -42,7 +42,7 @@ test('diff with nested yaml', () => {
 });
 
 test('diff with plain output', () => {
-  console.log(diff(json1, json2, 'plain'));
+  // console.log(diff(json1, json2, 'plain'));
   expect(diff(json1, json2, 'plain')).toEqual(plainOutput);
 });
 

@@ -26,16 +26,17 @@ const buildLine = (path, value, status) => {
 
 const iter = (path, data) => {
   const members = _.orderBy(_.entries(data), (a) => a[0]);
-  const result = members.reduce((acc, [key, value]) => {
+  const result = members.map(([key, value]) => {
     const status = getStatus(value);
     const newPath = [...path, key];
     if (status !== -1 && status !== 2) {
-      acc.push(buildLine(newPath, value, status));
-    } else if (status === -1) {
-      acc.push(iter(newPath, value));
+      return buildLine(newPath, value, status);
     }
-    return acc;
-  }, []);
+    if (status === -1) {
+      return iter(newPath, value).flat();
+    }
+    return [];
+  });
   return result.flat();
 };
 
