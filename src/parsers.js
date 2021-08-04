@@ -1,8 +1,8 @@
 import yaml from 'js-yaml';
 
-const fromJSON = (file) => JSON.parse(file);
+const fromJSON = (content) => JSON.parse(content);
 
-const fromYAML = (file) => yaml.load(file);
+const fromYAML = (content) => yaml.load(content);
 
 const getParser = (ext) => {
   if (ext === '.json') {

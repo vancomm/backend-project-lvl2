@@ -4,7 +4,7 @@ import makeTree from './tree.js';
 import getParser from './parsers.js';
 import getFormatter from './formatters/index.js';
 
-const normalizePath = (file) => path.resolve(process.cwd(), file);
+const normalizePath = (filepath) => path.resolve(process.cwd(), filepath);
 
 const diff = (filename1, filename2, formatterOption = 'stylish') => {
   const path1 = normalizePath(filename1);

@@ -21,3 +21,6 @@ lint:
 
 lint-fix:
 	npx eslint . --fix
+
+git-add:
+	git add . && git status

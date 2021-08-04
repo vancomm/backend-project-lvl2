@@ -16,7 +16,7 @@ const getChildren = (obj) => obj.children;
  * Get status of an object
  *
  * @param {Object} obj Object to get status of
- * @returns {("added"|"unchanged"|"updated"|"removed"|"bug")} Status of an object
+ * @returns {("added"|"unchanged"|"updated"|"removed")} Status of an object
  */
 const getStatus = (obj) => obj.status;
 
@@ -35,7 +35,7 @@ const makeLeaf = (key, oldValue, newValue, type = 'leaf') => {
   const makeStatus = (a, b) => {
     const hasOld = typeof a !== 'undefined';
     const hasNew = typeof b !== 'undefined';
-    if (!hasOld && !hasNew) return 'bug';
+    if (!hasOld && !hasNew) throw new Error('makeStatus() was passed bad values!');
     if (hasOld && hasNew) {
       return a === b ? 'unchanged' : 'updated';
     }
