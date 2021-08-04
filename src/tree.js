@@ -1,37 +1,37 @@
 import _ from 'lodash';
 
-const getKey = (obj) => obj.key;
+const getKey = (node) => node.key;
 
 /**
  * Get type of an object
  *
- * @param {Object} obj Object to get type of
+ * @param {Object} node Object to get type of
  * @returns {"node"|"leaf"} Type of an object
  */
-const getType = (obj) => obj.type;
+const getType = (node) => node.type;
 
-const getChildren = (obj) => obj.children;
+const getChildren = (node) => node.children;
 
 /**
  * Get status of an object
  *
- * @param {Object} obj Object to get status of
+ * @param {Object} node Object to get status of
  * @returns {("added"|"unchanged"|"updated"|"removed")} Status of an object
  */
-const getStatus = (obj) => obj.status;
+const getStatus = (node) => node.status;
 
 /**
  * Get values of an object
  *
- * @param {Object} obj Object to get values of
+ * @param {Object} node Object to get values of
  * @returns {{oldValue, newValue}} Values of object
  */
-const getValues = (obj) => {
-  const { oldValue, newValue } = obj;
+const getValues = (node) => {
+  const { oldValue, newValue } = node;
   return { oldValue, newValue };
 };
 
-const makeLeaf = (key, oldValue, newValue, type = 'leaf') => {
+const makeLeafNode = (key, oldValue, newValue, type = 'leaf') => {
   const makeStatus = (a, b) => {
     const hasOld = typeof a !== 'undefined';
     const hasNew = typeof b !== 'undefined';
@@ -61,7 +61,7 @@ const makeTree = (object, source) => {
 
   const onlyLeft = left
     .filter(([key]) => right.every(([name]) => name !== key))
-    .map(([key, value]) => makeLeaf(key, value));
+    .map(([key, value]) => makeLeafNode(key, value));
 
   const intersect = left
     .filter(([key]) => right.some(([name]) => name === key))
@@ -70,12 +70,12 @@ const makeTree = (object, source) => {
         const children = makeTree(object[key], source[key]);
         return makeNode(key, children);
       }
-      return makeLeaf(key, object[key], source[key]);
+      return makeLeafNode(key, object[key], source[key]);
     });
 
   const onlyRight = right
     .filter(([key]) => left.every(([name]) => name !== key))
-    .map(([key, value]) => makeLeaf(key, undefined, value));
+    .map(([key, value]) => makeLeafNode(key, undefined, value));
 
   return [...onlyLeft, ...intersect, ...onlyRight];
 };
