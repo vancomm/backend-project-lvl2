@@ -1,39 +1,35 @@
 import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 import makeTree from './tree.js';
-import { fromJSON, fromYAML } from './parsers.js';
+import getParser from './parsers.js';
 import getFormatter from './formatters/index.js';
 
 const normalizePath = (file) => path.resolve(process.cwd(), file);
 
-const getParser = (ext) => {
-  if (ext === '.json') {
-    return fromJSON;
-  }
-  if (ext === '.yaml' || ext === '.yml') {
-    return fromYAML;
-  }
-  return fromJSON;
-};
-
 const diff = (filename1, filename2, formatterOption = 'stylish') => {
-  const [path1, path2] = [filename1, filename2].map(normalizePath);
+  const path1 = normalizePath(filename1);
+  const path2 = normalizePath(filename2);
+
   if (!existsSync(path1) || !existsSync(path2)) {
     return 'Can\'t find files';
   }
-  const [file1, file2] = [path1, path2].map((item) => readFileSync(item, 'utf-8'));
 
-  const [ext1, ext2] = [path1, path2].map(path.extname);
+  const ext1 = path.extname(path1);
+  const ext2 = path.extname(path2);
+
   if (ext1.valueOf() !== ext2.valueOf()) {
     return 'Can\'t compare files with different extensions';
   }
+
   const parse = getParser(ext1);
 
-  const [data1, data2] = [file1, file2].map(parse);
+  const data1 = parse(readFileSync(path1, 'utf-8'));
+  const data2 = parse(readFileSync(path2, 'utf-8'));
+
   const tree = makeTree(data1, data2);
 
-  const formatResult = getFormatter(formatterOption);
-  const formatted = formatResult(tree);
+  const formatTree = getFormatter(formatterOption);
+  const formatted = formatTree(tree);
   return formatted;
 };
 
