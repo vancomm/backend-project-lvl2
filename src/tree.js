@@ -47,7 +47,7 @@ const makeLeaf = (key, oldValue, newValue, type = 'leaf') => {
     oldValue,
     newValue,
     type,
-    get status() { return makeStatus(this.oldValue, this.newValue); },
+    status: makeStatus(oldValue, newValue),
   };
 };
 
