@@ -1,5 +1,7 @@
 import _ from 'lodash';
-import { getStatus } from '../utilities.js';
+import {
+  getKey, getType, getChildren, getStatus, getValues,
+} from '../tree.js';
 
 const normalizeValue = (value) => {
   if (typeof value === 'undefined') return '';
@@ -8,35 +10,39 @@ const normalizeValue = (value) => {
   return value;
 };
 
-const buildLine = (path, value, status) => {
+const buildLine = (path, values, status) => {
   const pathString = path.join('.');
-  const { oldValue, newValue } = value;
+  const { oldValue, newValue } = values;
   const [oldString, newString] = [oldValue, newValue].map(normalizeValue);
-  if (status === 0) { //  removed
+  if (status === 'removed') {
     return `Property '${pathString}' was removed`;
   }
-  if (status === 1) { //  updated
+  if (status === 'updated') {
     return `Property '${pathString}' was updated. From ${oldString} to ${newString}`;
   }
-  if (status === 3) { //  added
+  if (status === 'added') {
     return `Property '${pathString}' was added with value: ${newString}`;
   }
-  return 'buildLine was called with bad arguments!';
+  return [];
 };
 
 const iter = (path, data) => {
-  const members = _.orderBy(_.entries(data), (a) => a[0]);
-  const result = members.map(([key, value]) => {
-    const status = getStatus(value);
-    const newPath = [...path, key];
-    if (status !== -1 && status !== 2) {
-      return buildLine(newPath, value, status);
-    }
-    if (status === -1) {
-      return iter(newPath, value).flat();
-    }
-    return [];
-  });
+  const result = _.orderBy(data, ({ key }) => key)
+    .map((object) => {
+      const key = getKey(object);
+      const type = getType(object);
+      const newPath = [...path, key];
+      if (type === 'node') {
+        const children = getChildren(object);
+        return iter(newPath, children).flat();
+      }
+      if (type === 'leaf') {
+        const values = getValues(object);
+        const status = getStatus(object);
+        return buildLine(newPath, values, status);
+      }
+      return [];
+    });
   return result.flat();
 };
 

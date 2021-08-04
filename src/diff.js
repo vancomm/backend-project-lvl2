@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import path from 'path';
-import buildResult from './buildResult.js';
+import makeTree from './tree.js';
 import { fromJSON, fromYAML } from './parsers.js';
 import getFormatter from './formatters/index.js';
 
@@ -30,10 +30,10 @@ const diff = (filename1, filename2, formatterOption = 'stylish') => {
   const parse = getParser(ext1);
 
   const [data1, data2] = [file1, file2].map(parse);
-  const result = buildResult(data1, data2);
+  const tree = makeTree(data1, data2);
 
   const formatResult = getFormatter(formatterOption);
-  const formatted = formatResult(result);
+  const formatted = formatResult(tree);
   return formatted;
 };
 
