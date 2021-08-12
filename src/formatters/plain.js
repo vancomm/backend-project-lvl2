@@ -34,7 +34,7 @@ const iter = (path, data) => {
       const newPath = [...path, key];
       if (type === 'node') {
         const children = getChildren(object);
-        return iter(newPath, children).flat();
+        return iter(newPath, children);
       }
       if (type === 'leaf') {
         const values = getValues(object);
