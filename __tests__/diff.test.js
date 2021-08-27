@@ -16,12 +16,10 @@ const getFixturePath = (filename, subfolder) => path.join(__dirname, '..', '__fi
 
 const formats = ['json', 'yaml'];
 
-// Fails hexlet checks
+// Hexlet check do not allow variables; code using 'let' is commented out
 // let expected;
 
 describe('flat files', () => {
-  // This fails hexlet checks hence const expected in all subsequent tests
-  //
   // beforeAll(async () => {
   //   const expectedPath = getFixturePath('flatoutput.txt', 'expected');
   //   expected = await readFile(expectedPath, 'utf-8');
