@@ -13,14 +13,6 @@ const getType = (node) => node.type;
 const getChildren = (node) => node.children;
 
 /**
- * Get status of a node
- *
- * @param {Object} node Node to get status of
- * @returns {("added"|"unchanged"|"updated"|"removed")} Status of a node
- */
-const getStatus = (node) => node.status;
-
-/**
  * Get values of a node
  *
  * @param {Object} node Node to get values of
@@ -31,25 +23,31 @@ const getValues = (node) => {
   return { oldValue, newValue };
 };
 
-const makeLeafNode = (key, oldValue, newValue, type = 'leaf') => {
-  const makeStatus = (a, b) => {
-    const hasOld = typeof a !== 'undefined';
-    const hasNew = typeof b !== 'undefined';
-    if (!hasOld && !hasNew) throw new Error('makeStatus() was passed bad values!');
-    if (hasOld && hasNew) {
-      return a === b ? 'unchanged' : 'updated';
-    }
-    return hasOld ? 'removed' : 'added';
-  };
+/**
+ * Get status of a node
+ *
+ * @param {Object} node Node to get status of
+ * @returns {("added"|"unchanged"|"updated"|"removed")} Status of a node
+ */
+const getStatus = (node) => node.status;
 
-  return {
-    key,
-    oldValue,
-    newValue,
-    type,
-    status: makeStatus(oldValue, newValue),
-  };
+const makeStatus = (older, newer) => {
+  const hasOld = typeof older !== 'undefined';
+  const hasNew = typeof newer !== 'undefined';
+  if (!hasOld && !hasNew) throw new Error('makeStatus() was passed bad values!');
+  if (hasOld && hasNew) {
+    return older === newer ? 'unchanged' : 'updated';
+  }
+  return hasOld ? 'removed' : 'added';
 };
+
+const makeLeafNode = (key, oldValue, newValue, type = 'leaf') => ({
+  key,
+  oldValue,
+  newValue,
+  type,
+  status: makeStatus(oldValue, newValue),
+});
 
 const makeInternalNode = (key, children, type = 'internal') => ({
   key, children, type,
