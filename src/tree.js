@@ -35,14 +35,11 @@ const makeStatus = (older, newer) => {
   const hasOld = typeof older !== 'undefined';
   const hasNew = typeof newer !== 'undefined';
   if (!hasOld && !hasNew) throw new Error('makeStatus() was passed bad values!');
-  if (hasOld && hasNew) {
-    return older === newer
-      ? 'unchanged'
-      : 'updated';
-  }
-  return hasOld
-    ? 'removed'
-    : 'added';
+  if (!hasOld) return 'added';
+  if (!hasNew) return 'removed';
+  return older === newer
+    ? 'unchanged'
+    : 'updated';
 };
 
 const makeLeafNode = (key, oldValue, newValue, type = 'leaf') => ({
