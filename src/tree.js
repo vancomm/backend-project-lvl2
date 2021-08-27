@@ -3,28 +3,28 @@ import _ from 'lodash';
 const getKey = (node) => node.key;
 
 /**
- * Get type of an object
+ * Get type of an node
  *
- * @param {Object} node Object to get type of
- * @returns {"node"|"leaf"} Type of an object
+ * @param {Object} node Node to get type of
+ * @returns {"internal"|"leaf"} Type of an node
  */
 const getType = (node) => node.type;
 
 const getChildren = (node) => node.children;
 
 /**
- * Get status of an object
+ * Get status of a node
  *
- * @param {Object} node Object to get status of
- * @returns {("added"|"unchanged"|"updated"|"removed")} Status of an object
+ * @param {Object} node Node to get status of
+ * @returns {("added"|"unchanged"|"updated"|"removed")} Status of a node
  */
 const getStatus = (node) => node.status;
 
 /**
- * Get values of an object
+ * Get values of a node
  *
- * @param {Object} node Object to get values of
- * @returns {{oldValue, newValue}} Values of object
+ * @param {Object} node Node to get values of
+ * @returns {{oldValue, newValue}} Values of node
  */
 const getValues = (node) => {
   const { oldValue, newValue } = node;
@@ -51,7 +51,7 @@ const makeLeafNode = (key, oldValue, newValue, type = 'leaf') => {
   };
 };
 
-const makeNode = (key, children, type = 'node') => ({
+const makeInternalNode = (key, children, type = 'internal') => ({
   key, children, type,
 });
 
@@ -68,7 +68,7 @@ const makeTree = (object, source) => {
     .map(([key, value]) => {
       if (_.isObject(value) && _.isObject(source[key])) {
         const children = makeTree(object[key], source[key]);
-        return makeNode(key, children);
+        return makeInternalNode(key, children);
       }
       return makeLeafNode(key, object[key], source[key]);
     });

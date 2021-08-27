@@ -17,14 +17,8 @@ const diff = (filename1, filename2, formatterOption = 'stylish') => {
   const ext1 = path.extname(path1);
   const ext2 = path.extname(path2);
 
-  if (ext1.valueOf() !== ext2.valueOf()) {
-    return 'Can\'t compare files with different extensions';
-  }
-
-  const parse = getParser(ext1);
-
-  const data1 = parse(readFileSync(path1, 'utf-8'));
-  const data2 = parse(readFileSync(path2, 'utf-8'));
+  const data1 = (getParser(ext1))(readFileSync(path1, 'utf-8'));
+  const data2 = (getParser(ext2))(readFileSync(path2, 'utf-8'));
 
   const tree = makeTree(data1, data2);
 

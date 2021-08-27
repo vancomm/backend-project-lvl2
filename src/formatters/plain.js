@@ -10,7 +10,7 @@ const normalizeValue = (value) => {
   return value;
 };
 
-const buildLine = (path, values, status) => {
+const makeLine = (path, values, status) => {
   const pathString = path.join('.');
   const { oldValue, newValue } = values;
   const [oldString, newString] = [oldValue, newValue].map(normalizeValue);
@@ -26,20 +26,20 @@ const buildLine = (path, values, status) => {
   return [];
 };
 
-const iter = (path, data) => {
-  const result = _.orderBy(data, ({ key }) => key)
+const makeLinesFromInternal = (path, data) => {
+  const result = _.orderBy(data, 'key')
     .map((object) => {
       const key = getKey(object);
       const type = getType(object);
       const newPath = [...path, key];
-      if (type === 'node') {
+      if (type === 'internal') {
         const children = getChildren(object);
-        return iter(newPath, children);
+        return makeLinesFromInternal(newPath, children);
       }
       if (type === 'leaf') {
         const values = getValues(object);
         const status = getStatus(object);
-        return buildLine(newPath, values, status);
+        return makeLine(newPath, values, status);
       }
       return [];
     });
@@ -47,7 +47,7 @@ const iter = (path, data) => {
 };
 
 const plain = (data) => {
-  const result = iter([], data);
+  const result = makeLinesFromInternal([], data);
   return result.join('\n');
 };
 
