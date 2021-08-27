@@ -26,8 +26,8 @@ const makeLine = (path, values, status) => {
   return [];
 };
 
-const makeLinesFromInternal = (path, data) => {
-  const result = _.orderBy(data, 'key')
+const makeLinesFromInternal = (path, node) => {
+  const result = _.orderBy(node, 'key')
     .map((object) => {
       const key = getKey(object);
       const type = getType(object);
@@ -46,8 +46,8 @@ const makeLinesFromInternal = (path, data) => {
   return result.flat();
 };
 
-const plain = (data) => {
-  const result = makeLinesFromInternal([], data);
+const plain = (rootNode) => {
+  const result = makeLinesFromInternal([], rootNode);
   return result.join('\n');
 };
 
